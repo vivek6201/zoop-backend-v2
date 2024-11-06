@@ -1,0 +1,11 @@
+{
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "java.project.sourcePaths": [
+    "apps/utility-service/src/controllers/email/auth",
+    "apps/utility-service/src/actions"
+  ]
+}
