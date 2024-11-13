@@ -6,20 +6,10 @@ enum Role {
 }
 
 model User {
-    id      String   @id @default(uuid())
-    name    String
-    email   String   @unique
-    role    Role
-    profile Profile?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model Profile {
-    id     String @id @default(uuid())
-    userId String @unique
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id    String @id @default(uuid())
+    name  String
+    email String @unique
+    role  Role
 
     userProfile            UserProfile?
     vendorProfile          VendorProfile?
@@ -31,20 +21,19 @@ model Profile {
 }
 
 model UserProfile {
-    id        String  @id @default(uuid())
-    profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-    profileId String  @unique
+    id String @id @default(uuid())
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String? @unique
 
     phoneNumber String
     address     String
     dob         DateTime
-    orders      UserOrders[]
-    cart        UserCart[]
+    orders      UserOrders?
+    cart        UserCart?
 
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-    userOrdersId String
-    userCartId   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Otp {
@@ -62,7 +51,7 @@ model UserOrders {
     //add fields
 
     UserProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
-    userProfileId String
+    userProfileId String      @unique
 
     createdAt DateTime @default(now())
     expiresAt DateTime
@@ -74,7 +63,7 @@ model UserCart {
     //add fields
 
     UserProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
-    userProfileId String
+    userProfileId String      @unique
 
     createdAt DateTime @default(now())
     expiresAt DateTime

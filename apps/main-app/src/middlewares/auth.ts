@@ -36,36 +36,4 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const isValidRole =
-  (requiredRoles: string[]) =>
-  (req: Request, res: Response, next: NextFunction): void => {
-    try {
-      const token = req.headers.token as string | jwt.JwtPayload;
-      if (!token || typeof token === "string") {
-        res.status(STATUS_CODES.UNAUTHORIZED).json({
-          success: false,
-          message: "Invalid token",
-        });
-        return;
-      }
-
-      const userRole = (token as jwt.JwtPayload).role;
-      if (!requiredRoles.includes(userRole)) {
-        res.status(STATUS_CODES.FORBIDDEN).json({
-          success: false,
-          message: "Forbidden: You do not have the required role",
-        });
-        return;
-      }
-
-      next();
-    } catch (error) {
-      console.error(error);
-      res.status(STATUS_CODES.SERVER_ERROR).json({
-        success: false,
-        message: "Authorization failed due to server error!",
-      });
-    }
-  };
-
 export default authMiddleware;

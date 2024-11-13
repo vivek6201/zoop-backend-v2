@@ -13,9 +13,10 @@ enum OrderPaymentType {
 }
 
 model VendorProfile {
-    id        String  @id @default(uuid())
-    profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-    profileId String  @unique
+    id String @id @default(uuid())
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String? @unique
 
     bussinessName    String
     bussinessAddress String

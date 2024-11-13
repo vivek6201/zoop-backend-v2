@@ -3,9 +3,14 @@ import { z } from "zod";
 export const adminProfileSchema = z.object({});
 
 export const userProfileSchema = z.object({
-  phoneNumber: z.number().min(10).max(10),
+  phoneNumber: z.number().min(10),
   address: z.string().min(3),
-  dob: z.date(),
+  dob: z.preprocess((arg) => {
+    if (typeof arg === "string" || arg instanceof Date) {
+      return new Date(arg);
+    }
+    return arg;
+  }, z.date()),
 });
 
 export const vendorProfileSchema = z.object({
