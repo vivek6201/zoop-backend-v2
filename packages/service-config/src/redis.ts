@@ -23,3 +23,4 @@ class Redis {
 }
 
 export const redisClient = Redis.getInstance().redisClient;
+export type RedisClient = typeof redisClient;

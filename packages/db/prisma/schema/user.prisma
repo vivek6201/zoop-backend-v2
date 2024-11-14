@@ -26,11 +26,12 @@ model UserProfile {
     user   User?   @relation(fields: [userId], references: [id])
     userId String? @unique
 
-    phoneNumber String
-    address     String
-    dob         DateTime
-    orders      UserOrders?
-    cart        UserCart?
+    phoneNumber  String
+    address      String
+    dob          DateTime
+    orders       UserOrders?
+    cart         UserCart?
+    orderReviews VendorReview?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

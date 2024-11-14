@@ -21,8 +21,5 @@ export const vendorDishSchema = z.object({
       "Only .jpeg, .png and .gif formats are supported"
     ),
   dishDescription: z.string().min(1, "Dish description is required"),
-  dishCategoryName: z
-    .string()
-    .min(3, "Dish category name must be at least 3 characters long"),
   dishCategoryId: z.string().min(1).optional(),
 });

@@ -24,8 +24,24 @@ model VendorProfile {
     activeStatus     Boolean        @default(false)
     approvedStatus   Boolean        @default(false)
     ratings          Float          @default(0)
+    reviews          VendorReview[]
     orders           VendorOrders[]
     vendorMenu       VendorMenu?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model VendorReview {
+    id String @id @default(uuid())
+
+    VendorProfile   VendorProfile? @relation(fields: [vendorProfileId], references: [id])
+    vendorProfileId String?
+
+    stars         Float
+    review        String
+    user          UserProfile @relation(fields: [userProfileId], references: [id])
+    userProfileId String      @unique
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -44,9 +60,10 @@ model VendorMenu {
 }
 
 model DishCategory {
-    id           String       @id @default(uuid())
-    categoryName String
+    id           String @id @default(uuid())
+    categoryName String @unique
     VendorDish   VendorDish[]
+
     VendorMenu   VendorMenu?  @relation(fields: [vendorMenuId], references: [id], onDelete: Cascade)
     vendorMenuId String?
 
