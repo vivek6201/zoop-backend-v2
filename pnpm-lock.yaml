@@ -20,6 +20,9 @@ importers:
 
   apps/delivery-service:
     dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -42,9 +45,58 @@ importers:
       '@repo/validations':
         specifier: workspace:*
         version: link:../../packages/validations
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.9.0
+      esbuild-node-externals:
+        specifier: ^1.15.0
+        version: 1.15.0(esbuild@0.24.0)
+
+  apps/food-service:
+    dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      esbuild:
+        specifier: ^0.24.0
+        version: 0.24.0
+      express:
+        specifier: ^4.21.1
+        version: 4.21.1
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
+    devDependencies:
+      '@repo/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@repo/service-config':
+        specifier: workspace:*
+        version: link:../../packages/service-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@repo/validations':
+        specifier: workspace:*
+        version: link:../../packages/validations
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.0
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0
@@ -115,6 +167,9 @@ importers:
 
   apps/order-service:
     dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -124,6 +179,9 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.1
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
     devDependencies:
       '@repo/db':
         specifier: workspace:*
@@ -137,9 +195,15 @@ importers:
       '@repo/validations':
         specifier: workspace:*
         version: link:../../packages/validations
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0
@@ -149,6 +213,9 @@ importers:
 
   apps/user-service:
     dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -158,6 +225,9 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.1
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
     devDependencies:
       '@repo/db':
         specifier: workspace:*
@@ -171,9 +241,15 @@ importers:
       '@repo/validations':
         specifier: workspace:*
         version: link:../../packages/validations
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0
@@ -214,6 +290,9 @@ importers:
 
   apps/vendor-service:
     dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -236,6 +315,9 @@ importers:
       '@repo/validations':
         specifier: workspace:*
         version: link:../../packages/validations
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
