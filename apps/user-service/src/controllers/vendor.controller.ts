@@ -37,6 +37,9 @@ export const createVendorProfileController: RequestHandler = async (
         ...data,
         phoneNumber: data.phoneNumber.toString(),
         userId,
+        vendorMenu: {
+          create: {},
+        },
       },
     });
   } catch (error) {
