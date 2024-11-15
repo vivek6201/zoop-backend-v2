@@ -1,8 +1,9 @@
 import { Request, RequestHandler, Response } from "express";
 import { userProfileSchema, z } from "@repo/validations/src";
-import { STATUS_CODES } from "../constants/statusCodes";
 import prisma, { UserProfile } from "@repo/db/src";
-import { tokenExtractor } from "../utils";
+import { tokenExtractor } from "../../utils";
+import { STATUS_CODES } from "../../constants/statusCodes";
+import { Token } from "../../types";
 
 export const createUserProfileController: RequestHandler = async (
   req: Request,
