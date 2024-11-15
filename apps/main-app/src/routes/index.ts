@@ -76,21 +76,21 @@ const pServiceConfig: Options = createProxyConfigs("User Service")(
   }
 );
 
-const fServiceConfig: Options = createProxyConfigs("User Service")(
+const fServiceConfig: Options = createProxyConfigs("Food Service")(
   FoodServiceUrl,
   {
     "^/fService": "",
   }
 );
 
-const dServiceConfig: Options = createProxyConfigs("User Service")(
+const dServiceConfig: Options = createProxyConfigs("Delivery Service")(
   DeliveryServiceUrl,
   {
     "^/dService": "",
   }
 );
 
-const vServiceConfig: Options = createProxyConfigs("User Service")(
+const vServiceConfig: Options = createProxyConfigs("Vendor Service")(
   VendorServiceUrl,
   {
     "^/vService": "",

@@ -60,11 +60,11 @@ model VendorMenu {
 }
 
 model DishCategory {
-    id           String @id @default(uuid())
-    categoryName String @unique
+    id           String       @id @default(uuid())
+    categoryName String       @unique
     VendorDish   VendorDish[]
 
-    VendorMenu   VendorMenu?  @relation(fields: [vendorMenuId], references: [id], onDelete: Cascade)
+    VendorMenu   VendorMenu? @relation(fields: [vendorMenuId], references: [id], onDelete: Cascade)
     vendorMenuId String?
 
     createdAt DateTime @default(now())

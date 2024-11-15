@@ -55,17 +55,17 @@ model UserOrders {
     userProfileId String      @unique
 
     createdAt DateTime @default(now())
-    expiresAt DateTime
+    updatedAt  DateTime @updatedAt
 }
 
 model UserCart {
     id String @id @default(uuid())
 
-    //add fields
+    metadata Json?
 
     UserProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
     userProfileId String      @unique
 
     createdAt DateTime @default(now())
-    expiresAt DateTime
+    updatedAt  DateTime @updatedAt
 }

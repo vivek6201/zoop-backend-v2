@@ -30,7 +30,7 @@ class Cache {
     }
 
     // set data in the redis cache
-    return this.client?.setEx(key, expiryTime, JSON.stringify(value)); // expires in 1 hour (3600 seconds)
+    return await this.client?.setEx(key, expiryTime, JSON.stringify(value));
   }
 
   public async get(key: string) {
@@ -47,6 +47,14 @@ class Cache {
 
     return JSON.parse(data);
   }
+
+  public async del(key: string) {
+    if(!this.client?.isOpen)
+      await this.connect();
+
+    return await this.client?.del(key);
+  }
+
 }
 
 export const cache = Cache.getInstance();

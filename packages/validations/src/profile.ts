@@ -19,4 +19,21 @@ export const vendorProfileSchema = z.object({
   phoneNumber: z.number().min(10),
 });
 
+export const cartItemSchema = z.object({
+  productId: z.string().uuid(),
+  quantity: z.number().int().positive(),
+  price: z.number().positive(),
+});
+
+export const updateCartSchema = z.object({
+  items: z
+    .array(cartItemSchema)
+    .min(1, "Cart can't be empty")
+    .max(20, "Too many items in cart"),
+});
+
+export const checkoutSchema = z.object({
+  paymentType: z.enum(["PREPAID", "COD"]),
+});
+
 export const deliveryProfileSchema = z.object({});
