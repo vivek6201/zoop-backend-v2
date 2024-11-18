@@ -206,7 +206,7 @@ export const checkoutUserController: RequestHandler = async (
     );
   } else {
     /**
-     * implement payment service which will validate and initiate order creation
+     * TODO: implement payment service which will validate and initiate order creation
      * by sending an event message to order service
      */
 
