@@ -30,6 +30,7 @@ export const updateCartSchema = z.object({
     .array(cartItemSchema)
     .min(1, "Cart can't be empty")
     .max(20, "Too many items in cart"),
+  vendorProfileId: z.string().uuid()
 });
 
 export const checkoutSchema = z.object({
