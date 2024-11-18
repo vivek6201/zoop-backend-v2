@@ -1,11 +1,11 @@
-import { cache } from "@repo/service-config/src";
-import { CART_EXPIRY, getCartKey } from "../utils";
+import { cache, getCartKey } from "@repo/service-config/src";
+import { CART_EXPIRY } from "../utils";
 import prisma from "@repo/db/src";
-import { Cart, CartItem } from "../types"
+import { Cart, CartItem } from "../types";
 
 export const cartService = () => {
   //get cart
-  const getCart = async (userProfileId: string): Promise<Cart | null> => {
+  const getCart = async (userProfileId?: string): Promise<Cart | null> => {
     const cachedCart = await cache.get(getCartKey(userProfileId));
 
     if (cachedCart) return cachedCart;
@@ -32,6 +32,7 @@ export const cartService = () => {
         metadata: dbCart.metadata as unknown as {
           items: CartItem[];
           total: number;
+          vendorProfileId: string;
         },
       };
     }
@@ -43,27 +44,29 @@ export const cartService = () => {
     await prisma.userCart.upsert({
       where: { userProfileId: cart.userProfileId },
       update: {
-        metadata: JSON.stringify(cart.metadata),
+        metadata: cart.metadata,
         updatedAt: cart.updatedAt,
       },
       create: {
         userProfileId: cart.userProfileId,
-        metadata: JSON.stringify(cart.metadata),
+        metadata: cart.metadata,
       },
     });
   };
 
   const updateCart = async (
     userProfileId: string,
+    vendorProfileId: string,
     items: CartItem[]
   ): Promise<Cart | Error> => {
     const cart: Cart = {
       metadata: {
         items,
         total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        vendorProfileId
       },
       updatedAt: new Date(),
-      userProfileId: userProfileId,
+      userProfileId,
     };
 
     await cache.set(getCartKey(userProfileId), cart, CART_EXPIRY);
@@ -81,7 +84,7 @@ export const cartService = () => {
   //replace this checkout with payment service i.e do these actions as per payments
   //if payment is cod proceed with order creation and when the order is created then
   //delete the cart.
-  const checkout = async (userProfileId: string) => {
+  const checkout = async (userProfileId?: string) => {
     const cart = await getCart(userProfileId);
 
     if (!cart) return;
@@ -94,6 +97,7 @@ export const cartService = () => {
     }
 
     await cache.del(getCartKey(userProfileId));
+    return cart;
   };
 
   return { checkout, getCart, updateCart };

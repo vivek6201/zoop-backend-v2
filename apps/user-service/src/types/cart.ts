@@ -7,6 +7,7 @@ export interface Cart {
   metadata: {
     items: CartItem[];
     total: number;
+    vendorProfileId: string;
   };
   updatedAt: Date;
 }

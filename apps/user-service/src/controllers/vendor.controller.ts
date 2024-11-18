@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { tokenExtractor } from "../utils";
+import { tokenExtractor } from "@repo/service-config/src";
 import prisma, { VendorProfile } from "@repo/db/src";
 import { STATUS_CODES } from "../constants/statusCodes";
 import { vendorProfileSchema, z } from "@repo/validations/src";

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { STATUS_CODES } from "../constants/statusCodes";
-import { tokenExtractor } from "../utils";
+import { tokenExtractor } from "@repo/service-config/src";
 
 export const isValidRole =
   (requiredRoles: string[]) =>
