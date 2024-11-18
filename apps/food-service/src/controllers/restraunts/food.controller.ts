@@ -1,5 +1,5 @@
 import prisma, { DishCategory, VendorDish } from "@repo/db/src";
-import { cache } from "@repo/service-config/src";
+import { cache, getFoodKeys } from "@repo/service-config/src";
 import { Request, RequestHandler, Response } from "express";
 import { STATUS_CODES } from "../../constants/statusCodes";
 import { dishCategorySchema, vendorDishSchema, z } from "@repo/validations/src";
@@ -13,7 +13,7 @@ export const getAllCategoriesController: RequestHandler = async (
   let categories: DishCategory[] = [];
 
   try {
-    categories = await cache.get(`restruants/${vendorMenuId}-categories`);
+    categories = await cache.get(getFoodKeys("CATEGORIES", vendorMenuId));
 
     if (categories) {
       res.status(STATUS_CODES.SUCCESS).json({
@@ -36,7 +36,7 @@ export const getAllCategoriesController: RequestHandler = async (
         vendorMenuId,
       },
     });
-    cache.set(`restruants/${vendorMenuId}-categories`, categories, 1500);
+    cache.set(getFoodKeys("CATEGORIES", vendorMenuId), categories, 1500);
 
     res.status(STATUS_CODES.SUCCESS).json({
       success: true,
@@ -61,7 +61,7 @@ export const getAllDishesController: RequestHandler = async (
   let dishes: VendorDish[] = [];
 
   try {
-    dishes = await cache.get(`restraunts/${vendorMenuId}-dishes`);
+    dishes = await cache.get(getFoodKeys("DISHES", vendorMenuId));
 
     if (dishes) {
       res.status(STATUS_CODES.SUCCESS).json({
@@ -81,7 +81,7 @@ export const getAllDishesController: RequestHandler = async (
         vendorMenuId,
       },
     });
-    cache.set(`restraunts/${vendorMenuId}-dishes`, dishes, 1500);
+    cache.set(getFoodKeys("DISHES", vendorMenuId), dishes, 1500);
 
     res.status(STATUS_CODES.SUCCESS).json({
       success: true,

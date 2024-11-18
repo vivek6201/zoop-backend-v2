@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { cache } from "@repo/service-config/src";
+import { cache, getRestrauntKeys } from "@repo/service-config/src";
 import prisma, { VendorMenu, VendorProfile } from "@repo/db/src";
 import { STATUS_CODES } from "../../constants/statusCodes";
 
@@ -9,7 +9,7 @@ export const getAllRestrauntsController: RequestHandler = async (
 ) => {
   let restruants = null;
   try {
-    restruants = await cache.get("restraunts/all");
+    restruants = await cache.get(getRestrauntKeys("ALL"));
     if (restruants) {
       res.status(STATUS_CODES.SUCCESS).json({
         success: true,
@@ -24,7 +24,7 @@ export const getAllRestrauntsController: RequestHandler = async (
 
   try {
     restruants = await prisma.vendorProfile.findMany();
-    cache.set("restraunts/all", restruants, 1500);
+    cache.set(getRestrauntKeys("ALL"), restruants, 1500);
 
     res.status(STATUS_CODES.SUCCESS).json({
       success: true,
@@ -46,12 +46,13 @@ export const getRestrauntDetailsController: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { id: vendorProfileId } = req.params;
+  const { id } = req.params;
+  const vendorProfileId = id as string;
 
   let restraunt: VendorProfile | null = null;
 
   try {
-    restraunt = await cache.get(`restraunts/${vendorProfileId}`);
+    restraunt = await cache.get(getRestrauntKeys("DETAILS", vendorProfileId));
 
     if (restraunt) {
       res.status(STATUS_CODES.SUCCESS).json({
@@ -79,7 +80,7 @@ export const getRestrauntDetailsController: RequestHandler = async (
       },
     });
 
-    cache.set(`restraunts/${vendorProfileId}`, restraunt, 1500);
+    cache.set(getRestrauntKeys("DETAILS", vendorProfileId), restraunt, 1500);
 
     res.status(STATUS_CODES.SUCCESS).json({
       success: true,
@@ -107,7 +108,7 @@ export const getRestrauntMenuController: RequestHandler = async (
   let menu: VendorMenu | null = null;
 
   try {
-    menu = await cache.get(`restraunts/${vendorProfileId}-menu`);
+    menu = await cache.get(getRestrauntKeys("MENU", vendorProfileId));
 
     if (menu) {
       res.status(STATUS_CODES.SUCCESS).json({
@@ -131,7 +132,7 @@ export const getRestrauntMenuController: RequestHandler = async (
         vendorDish: true,
       },
     });
-    cache.set(`restraunts/${vendorProfileId}-menu`, menu, 1500);
+    cache.set(getRestrauntKeys("MENU", vendorProfileId), menu, 1500);
 
     res.status(STATUS_CODES.SUCCESS).json({
       success: true,
