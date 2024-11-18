@@ -1,7 +1,7 @@
 enum VendorOrderStatus {
     Pending
     Accepted
-    Cooking
+    Processing
     Finished
     Cancelled
     Returned
@@ -9,7 +9,7 @@ enum VendorOrderStatus {
 
 enum OrderPaymentType {
     Prepaid
-    Cash
+    COD
 }
 
 model VendorProfile {
@@ -95,8 +95,8 @@ model VendorOrders {
     vendorProfileId String        @unique
 
     orderStatus              VendorOrderStatus
-    orderDeliveryAgent       DeliveryPartnerProfile @relation(fields: [deliveryPartnerProfileId], references: [id])
-    deliveryPartnerProfileId String                 @unique
+    orderDeliveryAgent       DeliveryPartnerProfile? @relation(fields: [deliveryPartnerProfileId], references: [id])
+    deliveryPartnerProfileId String?                 @unique
     orderPaymentType         OrderPaymentType
     orderDetail              Json
 

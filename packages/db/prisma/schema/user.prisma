@@ -49,23 +49,23 @@ model Otp {
 model UserOrders {
     id String @id @default(uuid())
 
-    //add fields
+    metadata Json
 
     UserProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
     userProfileId String      @unique
 
     createdAt DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    updatedAt DateTime @updatedAt
 }
 
 model UserCart {
     id String @id @default(uuid())
 
-    metadata Json?
+    metadata Json
 
     UserProfile   UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
     userProfileId String      @unique
 
     createdAt DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    updatedAt DateTime @updatedAt
 }
