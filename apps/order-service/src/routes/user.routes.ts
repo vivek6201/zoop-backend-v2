@@ -1,8 +1,12 @@
 import { IRouter, Router } from "express";
-import { getUserOrdersControllers } from "../controllers/user";
+import {
+  getOrderDetailsController,
+  getUserOrdersControllers,
+} from "../controllers/user";
 
 const router: IRouter = Router();
 
-router.get("/orders", getUserOrdersControllers);
+router.get("/:profileId/orders", getUserOrdersControllers);
+router.get("/orders/:orderId", getOrderDetailsController);
 
 export default router;

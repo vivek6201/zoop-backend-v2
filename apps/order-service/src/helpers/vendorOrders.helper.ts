@@ -1,21 +1,34 @@
-import prisma, { OrderPaymentType, VendorOrderStatus } from "@repo/db/src";
+import prisma, {
+  OrderPaymentType,
+  Prisma,
+  UserOrders,
+  VendorOrders,
+  VendorOrderStatus,
+} from "@repo/db/src";
 
-const createOrderHelper = async (orderData: any) => {
+const createOrderHelper: (orderData: any) => Promise<{
+  success: boolean;
+  message: string;
+  data?: {
+    vendorOrder: VendorOrders;
+    userOrder: UserOrders;
+  };
+}> = async (orderData: any) => {
   const { payment_type, order_status, cart } = orderData;
 
   try {
-    await prisma.$transaction(async (tx) => {
-      await tx.userOrders.create({
+    const result = await prisma.$transaction(async (tx) => {
+      const userOrder = await tx.userOrders.create({
         data: {
           userProfileId: cart.userProfileId,
           metadata: {
-            ...orderData.metadata,
+            ...cart.metadata,
             orderStatus: order_status,
           },
         },
       });
 
-      await tx.vendorOrders.create({
+      const vendorOrder = await tx.vendorOrders.create({
         data: {
           vendorProfileId: cart.metadata.vendorProfileId,
           orderStatus: VendorOrderStatus.Pending,
@@ -29,10 +42,13 @@ const createOrderHelper = async (orderData: any) => {
           },
         },
       });
+
+      return { vendorOrder, userOrder };
     });
     return {
       success: true,
       message: "Order created successfully!",
+      data: result,
     };
   } catch (error) {
     console.error(error);

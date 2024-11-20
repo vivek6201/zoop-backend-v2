@@ -39,3 +39,21 @@ export const getFoodKeys = (type: FoodKeytype, menuId?: string) => {
       return `${restraunt}/${menuId}-dishes`;
   }
 };
+
+export enum OrderKey {
+  VENDOR_ORDERS = "VENDOR_ORDERS",
+  USER_ORDERS = "USER_ORDERS",
+}
+
+export const getOrdersKey = (type: OrderKey, orderId?: string) => {
+  switch (type) {
+    case OrderKey.USER_ORDERS:
+      return `orders/user/${orderId}`;
+    case OrderKey.VENDOR_ORDERS:
+      return `orders/vendor/${orderId}`;
+    default:
+      throw new Error(`Invalid order key type: ${type}`);
+  }
+};
+
+export const getProductKey = (productId: string) => `products/${productId}`;

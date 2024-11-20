@@ -92,7 +92,7 @@ model VendorDish {
 model VendorOrders {
     id              String        @id @default(uuid())
     VendorProfile   VendorProfile @relation(fields: [vendorProfileId], references: [id], onDelete: Cascade)
-    vendorProfileId String        @unique
+    vendorProfileId String
 
     orderStatus              VendorOrderStatus
     orderDeliveryAgent       DeliveryPartnerProfile? @relation(fields: [deliveryPartnerProfileId], references: [id])

@@ -1,5 +1,8 @@
 import { pubSubClient, types } from "@repo/service-config/src";
 import createOrderHelper from "../helpers/vendorOrders.helper";
+import getProductDetails, {
+  getVendorDetails,
+} from "../helpers/productInfo.helper";
 
 const subscriptionHandler = () => {
   const codOrder = async (evMsg: string) => {
@@ -9,11 +12,7 @@ const subscriptionHandler = () => {
      * till then make a db call to create entry in orders table with the status pending
      */
     const parsedMessage = JSON.parse(evMsg);
-    const { success, message } = await createOrderHelper(parsedMessage);
-
-    // TODO: here, notify vendor about the order and ask to accept or reject!
-
-    // -----------write code here------------
+    const { success, message, data } = await createOrderHelper(parsedMessage);
 
     //sends the result of the order, and let user wait for the acceptance here
     await pubSubClient.publish(
@@ -22,6 +21,45 @@ const subscriptionHandler = () => {
         requestId: parsedMessage.requestId,
         success,
         message,
+      })
+    );
+
+    // TODO: here, notify vendor about the order and ask to accept or reject!
+
+    //early return order creation failed
+    if (!success || !data) return;
+
+    const products = await Promise.all(
+      parsedMessage.cart.metadata.items.map(
+        async (item: {
+          productId: string;
+          quantity: number;
+          price: number;
+        }) => {
+          const productDetails = await getProductDetails(item.productId);
+          return {
+            product: productDetails,
+            quantity: item.quantity,
+          };
+        }
+      )
+    );
+
+    const vendor = await getVendorDetails(data.vendorOrder.vendorProfileId);
+
+    await pubSubClient.publish(
+      types.RedisMessage.VENDOR_MSG,
+      JSON.stringify({
+        type: types.SocketMessage.VENDOR_MSG,
+        data: {
+          type: types.OrderMessage.ORDER_INITIATED,
+          data: {
+            products,
+            vendorUserId: vendor.data ? vendor.data.id : null,
+            vendorOrderId: data?.vendorOrder.id,
+            userOrderId: data?.userOrder.id,
+          },
+        },
       })
     );
   };
