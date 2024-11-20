@@ -2,11 +2,13 @@ import { redisClient } from "@repo/service-config/src/index";
 import sendAuthEmail from "../services/email/auth";
 
 const handleRedisActions = async () => {
-  const client = await redisClient?.connect();
+  if (!redisClient?.isOpen) {
+    await redisClient?.connect();
+  }
 
   // infinite loop which pop events from the queue
   while (1) {
-    const result = await client?.brPop("utility", 0);
+    const result = await redisClient?.brPop("utility", 0);
 
     // if data is null | undefined then skip the iteration
     if (!result) continue;
