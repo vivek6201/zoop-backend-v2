@@ -55,7 +55,7 @@ const buildConfig = {
   outfile: "dist/index.js",
   bundle: true,
   platform: "node",
-  format: "cjs", // Changed to CommonJS
+  format: "esm",
   sourcemap: true,
   minify: IS_PROD,
   target: ["node20"],

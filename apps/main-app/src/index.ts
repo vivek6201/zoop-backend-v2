@@ -2,8 +2,9 @@ import { configDotenv } from "dotenv";
 import express from "express";
 import cors from "cors";
 import router from "./routes";
-import { SocketService } from "./services/socketService";
+import { SocketService } from "./services/ws/socketService";
 import { createServer } from "http";
+import eventHandler from "./services/events";
 
 configDotenv();
 const app = express();
@@ -26,5 +27,9 @@ server.listen(port, () => {
   console.log("server is up at: " + port);
 });
 
-const socketService = SocketService.getInstance(server);
-socketService.startServer();
+//establish socket connection between server and client
+export const socketService = SocketService.getInstance(server);
+await socketService.startServer();
+
+//initialize pubs/sub event handler, to perform event-driven backend communication.
+eventHandler();

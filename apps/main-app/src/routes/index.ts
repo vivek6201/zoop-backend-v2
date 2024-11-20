@@ -1,3 +1,9 @@
+type ServiceConfig = {
+  name: string;
+  url: string;
+  prefix: string;
+};
+
 import { Router } from "express";
 import authRoutes from "./auth.routes";
 import { createProxyMiddleware, Options } from "http-proxy-middleware";
@@ -5,6 +11,7 @@ import authMiddleware from "../middlewares/auth";
 import {
   DeliveryServiceUrl,
   FoodServiceUrl,
+  OrderServiceUrl,
   UserServiceUrl,
   VendorServiceUrl,
 } from "../constants/urls";
@@ -69,38 +76,47 @@ const createProxyConfigs =
     };
   };
 
-const pServiceConfig: Options = createProxyConfigs("User Service")(
-  UserServiceUrl,
+const services: ServiceConfig[] = [
   {
-    "^/pService": "",
-  }
-);
-
-const fServiceConfig: Options = createProxyConfigs("Food Service")(
-  FoodServiceUrl,
+    name: "User Service",
+    url: UserServiceUrl,
+    prefix: "^/pService",
+  },
   {
-    "^/fService": "",
-  }
-);
-
-const dServiceConfig: Options = createProxyConfigs("Delivery Service")(
-  DeliveryServiceUrl,
+    name: "Order Service",
+    url: OrderServiceUrl,
+    prefix: "^/oService",
+  },
   {
-    "^/dService": "",
-  }
-);
-
-const vServiceConfig: Options = createProxyConfigs("Vendor Service")(
-  VendorServiceUrl,
+    name: "Food Service",
+    url: FoodServiceUrl,
+    prefix: "^/fService",
+  },
   {
-    "^/vService": "",
-  }
-);
+    name: "Delivery Service",
+    url: DeliveryServiceUrl,
+    prefix: "^/dService",
+  },
+  {
+    name: "Vendor Service",
+    url: VendorServiceUrl,
+    prefix: "^/vService",
+  },
+];
 
-router.use("/auth", authRoutes);
-router.use("/pService", authMiddleware, createProxyMiddleware(pServiceConfig));
-router.use("/fService", authMiddleware, createProxyMiddleware(fServiceConfig));
-router.use("/dService", authMiddleware, createProxyMiddleware(dServiceConfig));
-router.use("/vService", authMiddleware, createProxyMiddleware(vServiceConfig));
+const setupProxyRoutes = (router: Router, services: ServiceConfig[]) => {
+  // Add auth routes
+  router.use("/auth", authRoutes);
 
-export default router;
+  // Add service routes
+  services.forEach((service) => {
+    const config = createProxyConfigs(`${service.name}`)(service.url, {
+      [service.prefix]: "",
+    });
+    router.use(service.prefix, authMiddleware, createProxyMiddleware(config));
+  });
+
+  return router;
+};
+
+export default setupProxyRoutes(router, services);
