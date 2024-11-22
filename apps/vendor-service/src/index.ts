@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
+import { configDotenv } from "dotenv";
 
-const PORT = process.env.PORT;
+configDotenv({path: "../../.env"});
+const PORT = process.env.VENDOR_SERIVCE_PORT;
 const app = express();
 
 app.use(express.json());

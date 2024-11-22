@@ -2,9 +2,9 @@ import { configDotenv } from "dotenv";
 import express from "express";
 import handleRedisActions from "./actions/redis-actions";
 
-configDotenv();
+configDotenv({path: "../../.env"});
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.UTILITY_SERVICE_PORT;
 
 app.listen(PORT, () => {
   console.log(`server is up at port ${PORT}`);

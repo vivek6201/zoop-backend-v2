@@ -4,9 +4,9 @@ import { configDotenv } from "dotenv";
 import router from "./routes";
 import { eventHandler } from "./services";
 
-configDotenv();
+configDotenv({path: "../../.env"});
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.ORDER_SERVICE_PORT;
 
 app.use(express.json());
 app.use(cors());

@@ -3,8 +3,8 @@ import router from "./routes";
 import cors from "cors";
 import { configDotenv } from "dotenv";
 
-configDotenv()
-const PORT = process.env.PORT;
+configDotenv({path: "../../.env"});
+const PORT = process.env.USER_SERVICE_PORT;
 const app = express();
 
 app.use(express.json());

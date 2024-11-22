@@ -6,10 +6,10 @@ import { SocketService } from "./services/ws/socketService";
 import { createServer } from "http";
 import eventHandler from "./services/events";
 
-configDotenv();
+configDotenv({path: "../../.env"});
 const app = express();
 const server = createServer(app);
-const port = process.env.PORT;
+const port = process.env.MAIN_APP_PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
