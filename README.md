@@ -25,3 +25,20 @@
  - http-proxy-middleware (it forwards the requests to desired microservice)
  - WS Library (to accept websocket connections)
  - Redis (An in-memory db for caching, pub-subs, queues) - It is used for caching data, pub/subs for Internal backend communication between multiple internal services.
+
+## How to Setup (Without Docker):
+
+ - Step 1: Clone the repository:
+      ```
+      git clone https://github.com/vivek6201/zoop-backend-v2.git
+      ```
+ - Step 2: Install all dependencies:
+      ```
+      pnpm install
+      ```
+ - Step 3: copy the contents of .env.example file to .env file, of all the services, and replace the urls of your services
+ - Step 4: Build all services, and then run all of them by writing the commands indivisually
+      ```
+      pnpm build && pnpm start
+      ```
+ - That's all.
