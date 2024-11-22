@@ -41,4 +41,6 @@
       ```
       pnpm build && pnpm start
       ```
+ - Step 4: Run your Redis Instance locally using docker, or get redis instance online
+ 
  - That's all.
