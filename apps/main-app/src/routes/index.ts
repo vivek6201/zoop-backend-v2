@@ -36,6 +36,10 @@ const createProxyConfigs =
             pReq.destroy();
           });
 
+          if(req.headers["content-type"]?.includes('multipart/form-data')){
+            return;
+          }
+
           if ((req as any).body) {
             const bodyData = JSON.stringify((req as any).body);
             // Write the body content to the proxy request

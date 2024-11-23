@@ -1,5 +1,12 @@
 import prisma, { DishCategory, VendorDish } from "@repo/db/src";
-import { cache, getFoodKeys } from "@repo/service-config/src";
+import {
+  cache,
+  Cloudinary,
+  cloudinaryClient,
+  CloudinaryResponse,
+  getFoodKeys,
+  UploadApiResponse,
+} from "@repo/service-config/src";
 import { Request, RequestHandler, Response } from "express";
 import { STATUS_CODES } from "../../constants/statusCodes";
 import { dishCategorySchema, vendorDishSchema, z } from "@repo/validations/src";
@@ -120,10 +127,24 @@ export const creatMenuDishController: RequestHandler = async (
     return;
   }
 
-  let dishImageUrl: string | null = null;
+  let dishImageUrl: string | null | undefined = null;
 
   if (data.dishImage) {
-    //upload to object store like s3, cloudinary or firebase
+    let dish: CloudinaryResponse | null = null;
+    try {
+      dish = await cloudinaryClient.uploadImage(data.dishImage, "Dishes");
+    } catch (error) {
+      console.error("Error while uploading image", error);
+      res.status(STATUS_CODES.SERVER_ERROR).json({
+        success: false,
+        message: "Error while uploading image to server!",
+      });
+    }
+
+    //early return if upload fails
+    if (!dish?.success) return;
+
+    dishImageUrl = dish.data?.url;
   }
 
   try {
@@ -266,10 +287,24 @@ export const updateMenuDishController: RequestHandler = async (
     return;
   }
 
-  const dishImageUrl: string | null | undefined = dish.dishImage;
+  let dishImageUrl: string | null | undefined = dish.dishImage;
 
   if (data.dishImage) {
-    //process image and create url
+    let dish: CloudinaryResponse | null = null;
+    try {
+      dish = await cloudinaryClient.uploadImage(data.dishImage, "Dishes");
+    } catch (error) {
+      console.error("Error while uploading image", error);
+      res.status(STATUS_CODES.SERVER_ERROR).json({
+        success: false,
+        message: "Error while uploading image to server!",
+      });
+    }
+
+    //early return if upload fails
+    if (!dish?.success) return;
+
+    dishImageUrl = dish.data?.url;
   }
 
   try {

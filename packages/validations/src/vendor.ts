@@ -9,7 +9,7 @@ export const vendorDishSchema = z.object({
   dishPrice: z.number().min(1, "Dish price must be at least 1"),
   dishRating: z.number().min(0).max(5).default(0),
   dishImage: z
-    .instanceof(File)
+    .any()
     .optional()
     .refine(
       (file) => !file || file.size <= 5 * 1024 * 1024,
@@ -17,8 +17,15 @@ export const vendorDishSchema = z.object({
     )
     .refine(
       (file) =>
-        !file || ["image/jpeg", "image/png", "image/gif"].includes(file.type),
-      "Only .jpeg, .png and .gif formats are supported"
+        !file ||
+        [
+          "image/jpeg",
+          "image/png",
+          "image/gif",
+          "image/webp",
+          "image/heic",
+        ].includes(file.mimetype),
+      "Only .jpeg, .png, webp, heic and .gif formats are supported"
     ),
   dishDescription: z.string().min(1, "Dish description is required"),
   dishCategoryId: z.string().min(1).optional(),

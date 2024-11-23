@@ -37,10 +37,11 @@
       pnpm install
       ```
  - Step 3: copy the contents of .env.example file to .env file, of all the services, and replace the urls of your services
- - Step 4: Build all services, and then run all of them by writing the commands indivisually
+ - Step 4: Run your Redis Instance locally using docker, or get redis instance online
+
+ - Step 5: Build all services, and then run all of them by writing the commands indivisually
       ```
       pnpm build && pnpm start
       ```
- - Step 4: Run your Redis Instance locally using docker, or get redis instance online
- 
+
  - That's all.

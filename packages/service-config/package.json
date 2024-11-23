@@ -7,10 +7,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "exports":{
+  "exports": {
     "./config": "./src/index.ts"
   },
   "dependencies": {
+    "cloudinary": "^2.5.1",
     "redis": "^4.7.0"
   },
   "devDependencies": {

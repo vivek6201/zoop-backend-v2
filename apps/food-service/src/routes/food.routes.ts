@@ -9,6 +9,7 @@ import {
 } from "../controllers/restraunts";
 import { isValidRole } from "../middlewares/auth";
 import { Role } from "@repo/db/src";
+import { singleUploadMiddleware } from "../middlewares/upload";
 
 const router: IRouter = Router();
 
@@ -18,6 +19,7 @@ router.get("/:menuId/dishes", getAllDishesController);
 router.post(
   "/:menuId/dish/create",
   isValidRole([Role.Vendor]),
+  singleUploadMiddleware("dishImage"),
   creatMenuDishController
 );
 router.post(
@@ -29,6 +31,7 @@ router.post(
 router.patch(
   "/:dishId/dish/update",
   isValidRole([Role.Vendor]),
+  singleUploadMiddleware("dishImage"),
   updateMenuDishController
 );
 router.patch(
